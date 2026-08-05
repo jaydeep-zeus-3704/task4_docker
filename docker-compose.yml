@@ -26,11 +26,11 @@ services:
 
   frontend:
     container_name: todoapp_frontend
-    image: node_frontend:latest
+    image: frontend:latest
     env_file:         
       - .frontend.env
     ports:
-      - "3000:3000"
+      - "3000:80"
     depends_on:
       - backend
     restart: always
