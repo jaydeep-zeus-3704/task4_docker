@@ -8,13 +8,17 @@ services:
     ports:
       - "5432:5432"
     volumes:
-      - pgsql_data:/var/lib/pgsql
+      - pgsql_data:/var/lib/postgresql/data
     restart: always
 
 
   backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+      secrets:
+        - auth_token
     container_name: todoapp_backend
-    image: node_backend:latest
     env_file:
       - .backend.env
     ports:
@@ -25,8 +29,14 @@ services:
 
 
   frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+      secrets:
+        - auth_token
+      args:
+        - REACT_APP_BACKEND_HOST=localhost
     container_name: todoapp_frontend
-    image: frontend:latest
     env_file:         
       - .frontend.env
     ports:
@@ -37,3 +47,8 @@ services:
 
 volumes:
   pgsql_data:
+
+
+secrets:
+  auth_token:
+    environment: TOKEN
