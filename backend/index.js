@@ -9,7 +9,7 @@ app.use(cors());
 app.use(express.json());
 
 // Get all todos
-app.get('/todos', async (req, res) => {
+app.get('/api/todos', async (req, res) => {
   try {
     const todos = await pool.query('SELECT * FROM todos ORDER BY id ASC');
     res.json(todos.rows);
@@ -20,7 +20,7 @@ app.get('/todos', async (req, res) => {
 });
 
 // Add a todo
-app.post('/todos', async (req, res) => {
+app.post('/api/todos', async (req, res) => {
   try {
     const { task } = req.body;
     const newTodo = await pool.query(
@@ -35,7 +35,7 @@ app.post('/todos', async (req, res) => {
 });
 
 // Delete a todo
-app.delete('/todos/:id', async (req, res) => {
+app.delete('/api/todos/:id', async (req, res) => {
   try {
     const { id } = req.params;
     await pool.query('DELETE FROM todos WHERE id = $1', [id]);
