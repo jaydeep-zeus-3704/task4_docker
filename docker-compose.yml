@@ -35,7 +35,7 @@ services:
       secrets:
         - auth_token
       args:
-        - REACT_APP_BACKEND_HOST=backend-service
+        - REACT_APP_BACKEND_HOST=localhost
     container_name: todoapp_frontend
     env_file:         
       - .frontend.env
@@ -51,4 +51,4 @@ volumes:
 
 secrets:
   auth_token:
-    file: ./secret.txt
+    environment: TOKEN
