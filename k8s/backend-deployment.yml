@@ -1,0 +1,55 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend-deployment
+  labels:
+    app: backend
+spec:
+  selector:
+    matchLabels:
+      app: backend
+  template:
+    metadata:
+        labels:
+          app: backend
+    spec:
+      containers:
+        - name: backend
+          image: jaydeepimages.azurecr.io/task-4-backend:latest
+          livenessProbe:
+              httpGet:
+                path: /api/todos
+                port: 5000
+              initialDelaySeconds: 10
+              periodSeconds: 10
+              successThreshold: 1
+          readinessProbe:
+              httpGet:
+                path: /api/todos
+                port: 5000
+              initialDelaySeconds: 10
+              periodSeconds: 10
+              successThreshold: 1
+          resources:
+              requests:
+                cpu: "200m"
+                memory: "512Mi"
+              limits:
+                cpu: "500m"
+                memory: "1Gi"
+          ports:
+            - containerPort: 5000
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: backend-service
+spec:
+  type: ClusterIP
+  selector:
+    app: backend
+  ports:
+  - port: 5000
+    targetPort: 5000

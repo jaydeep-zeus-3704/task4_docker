@@ -7,7 +7,7 @@ function App() {
 
   const fetchTodos = async () => {
     try {
-      const res = await fetch(`http://${process.env.REACT_APP_BACKEND_HOST}:5000/todos`);
+      const res = await fetch(`api/todos`);
       if (!res.ok) throw new Error('Failed to fetch');
       const data = await res.json();
       setTodos(Array.isArray(data) ? data : []);
@@ -22,7 +22,7 @@ function App() {
     
     setLoading(true);
     try {
-      await fetch(`http://${process.env.REACT_APP_BACKEND_HOST}:5000/todos`, {
+      await fetch(`api/todos`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ task: task.trim() }),
@@ -38,7 +38,7 @@ function App() {
 
   const deleteTodo = async (id) => {
     try {
-      await fetch(`http://${process.env.REACT_APP_BACKEND_HOST}:5000/todos/${id}`, { method: 'DELETE' });
+      await fetch(`api/todos/${id}`, { method: 'DELETE' });
       await fetchTodos();
     } catch (err) {
       console.error(err);
